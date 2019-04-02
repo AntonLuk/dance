@@ -44,8 +44,24 @@ function rightHandDown(elf) {
     }, elf.danceSpeed);
   });
 }
+function rightLegUp(elf) {
+    return new Promise((resolve) => {
+      setTimeout(()=>{
+        elf.stance=[elf.stance[0],elf.stance[1],elf.stance[2],1];
+        resolve(elf);
+      },elf.danceSpeed);
+    });
+}
+function leftLegUp(elf) {
+    return new Promise((resolve) => {
+        setTimeout(()=>{
+            elf.stance=[elf.stance[0],elf.stance[1],1,elf.stance[3]];
+            resolve(elf);
+        },elf.danceSpeed);
+    });
+}
 function random(min, max) {
-  var rand = min - 0.5 + Math.random() * (max - min + 1)
+  let rand = min - 0.5 + Math.random() * (max - min + 1)
   rand = Math.round(rand);
   return rand;
 }
@@ -55,12 +71,10 @@ function random(min, max) {
 // какую-то фигуру или команду и вернуть Promise
 function displayGemToElf(elf, gem) {
   let r=random(4);
-  let arr=[leftHandUp,leftHandDown,rightHandDown,rightHandDown];
+  let arr=[leftHandUp,leftHandDown,rightHandDown,rightHandDown,rightLegUp,leftLegUp];
   //console.log(random(0,3));
-  return arr[random(0,3)](elf).then(arr[random(0,3)]);
+  return arr[random(0,5)](elf).then(arr[random(0,5)]);
 }
-
-
 // Эта функция принимает в качестве аргумента танец всех эльфов - массив их Promis'ов,
 // и драгоценность, которая сейчас демонстрируется всем эльфам.
 // Возвращает также танец всех эльфов - массив их Promis'ов
