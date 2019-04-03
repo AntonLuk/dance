@@ -35,31 +35,47 @@ function rightHandUp(elf) {
     }, elf.danceSpeed);
   });
 }
-
 function rightHandDown(elf) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      elf.stance=[elf.stance[0], 0, elf.stance[2],elf.stance[3]];
-      resolve(elf);
-    }, elf.danceSpeed);
-  });
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            elf.stance=[elf.stance[0], 0, elf.stance[2],elf.stance[3]];
+            resolve(elf);
+        }, elf.danceSpeed);
+    });
 }
 function rightLegUp(elf) {
     return new Promise((resolve) => {
-      setTimeout(()=>{
-        elf.stance=[elf.stance[0],elf.stance[1],elf.stance[2],1];
-        resolve(elf);
-      },elf.danceSpeed);
+        setTimeout(() => {
+            elf.stance=[elf.stance[0], elf.stance[1], elf.stance[2],1];
+            resolve(elf);
+        }, elf.danceSpeed);
+    });
+}
+function rightLegDown(elf) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            elf.stance=[elf.stance[0], elf.stance[1], elf.stance[2],0];
+            resolve(elf);
+        }, elf.danceSpeed);
     });
 }
 function leftLegUp(elf) {
     return new Promise((resolve) => {
-        setTimeout(()=>{
-            elf.stance=[elf.stance[0],elf.stance[1],1,elf.stance[3]];
+        setTimeout(() => {
+            elf.stance=[elf.stance[0], elf.stance[1], 1, elf.stance[3]];
             resolve(elf);
-        },elf.danceSpeed);
+        }, elf.danceSpeed);
     });
 }
+function leftLegDown(elf) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            elf.stance=[elf.stance[0], elf.stance[1], 0, elf.stance[3]];
+            resolve(elf);
+        }, elf.danceSpeed);
+    });
+}
+
 function random(min, max) {
   let rand = min - 0.5 + Math.random() * (max - min + 1)
   rand = Math.round(rand);
@@ -70,10 +86,12 @@ function random(min, max) {
 // сейчас демонстрируется всем эльфам. Здесь нужно дать команду эльфу выполнить
 // какую-то фигуру или команду и вернуть Promise
 function displayGemToElf(elf, gem) {
-  let r=random(4);
-  let arr=[leftHandUp,leftHandDown,rightHandDown,rightHandDown,rightLegUp,leftLegUp];
+  let r=random(0,10);
+ console.log(gem);
+  let arr=[rightHandUp,leftHandDown,leftHandUp,rightHandDown,rightLegUp,rightLegDown,leftLegUp,leftLegDown];
   //console.log(random(0,3));
-  return arr[random(0,5)](elf).then(arr[random(0,5)]);
+  return arr[random(0,arr.length-1)](elf).then(arr[random(0,arr.length-1)]);
+    //return leftLegUp(elf).then(leftLegDown);
 }
 // Эта функция принимает в качестве аргумента танец всех эльфов - массив их Promis'ов,
 // и драгоценность, которая сейчас демонстрируется всем эльфам.
