@@ -81,24 +81,96 @@ function random(min, max) {
   rand = Math.round(rand);
   return rand;
 }
+function allHandUp(elf) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            elf.stance=[1, 1, elf.stance[2],elf.stance[3]];
+            resolve(elf);
+        }, elf.danceSpeed);
+    });
+}
+function allLegDown(elf) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            elf.stance=[elf.stance[0], elf.stance[1], 0, 0];
+            resolve(elf);
+        }, elf.danceSpeed);
+    });
+}
+function allLegUp(elf) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            elf.stance=[elf.stance[0], elf.stance[1], 1, 1];
+            resolve(elf);
+        }, elf.danceSpeed);
+    });
+}
 
+function allHandDown(elf) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            elf.stance=[0, 0, elf.stance[2],elf.stance[3]];
+            resolve(elf);
+        }, elf.danceSpeed);
+    });
+}
+function start(elf) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            elf.stance=[0, 0, 1,1];
+            resolve(elf);
+        }, elf.danceSpeed);
+    });
+}
 // Эта функция принимает в качестве аргумента эльфа и драгоценность, которая
 // сейчас демонстрируется всем эльфам. Здесь нужно дать команду эльфу выполнить
 // какую-то фигуру или команду и вернуть Promise
 function displayGemToElf(elf, gem) {
   let r=random(0,10);
- console.log(gem);
+ // console.log(elf.favouriteGems.toString());
+ // console.log(gem);
   let arr=[rightHandUp,leftHandDown,leftHandUp,rightHandDown,rightLegUp,rightLegDown,leftLegUp,leftLegDown];
+   //return allHandUp(elf).then(allHandDown);
+    switch (gem) {
+        case elf.favouriteGems.toString():
+             //return arr[0](elf),arr[2](elf);
+            //return allHandUp(elf).then(allHandUp);
+           return allHandUp(elf).then(allHandUp);
+            break;
+        case elf.dislikedGems.toString():
+            return allHandDown(elf).then(allHandDown);
+            break;
+        case 'Андалузит':
+                return start(elf).then(start);
+            break;
+        case "Цитрин":
+            return
+        break;
+        // case 'Гиацинт':
+        //     for (let i = 0; i < elves.count(); i++) {
+        //         elves[i].stance=[1, 1, 0, 0];
+        //     }
+        //     break;
+
+        default:
+            return arr[random(0,arr.length-1)](elf).then(arr[random(0,arr.length-1)]);
+    }
+   // console.log(Promise.all([leftHandUp(elf).then(leftHandDown),rightHandUp(elf).then(rightHandDown)]));
+
+     //return Promise.all([leftHandUp(elf).then(leftHandDown),rightHandUp(elf).then(rightHandDown)]);
+    //return ([leftHandUp(elf).then(leftHandDown)]);
   //console.log(random(0,3));
-  return arr[random(0,arr.length-1)](elf).then(arr[random(0,arr.length-1)]);
+
     //return leftLegUp(elf).then(leftLegDown);
 }
 // Эта функция принимает в качестве аргумента танец всех эльфов - массив их Promis'ов,
 // и драгоценность, которая сейчас демонстрируется всем эльфам.
 // Возвращает также танец всех эльфов - массив их Promis'ов
 function continueDance(elvesPromises, gem) {
+    //console.log(elf.stance);
   return elvesPromises.map((elfPromise) => {
     return elfPromise.then(elf => {
+        console.log(elf.stance);
       return displayGemToElf(elf, gem)
     })
   })
