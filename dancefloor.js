@@ -18,15 +18,14 @@ function random(min, max) {
     return rand;
 }
 let allfaces=['(·_·)','(o_o)','(o_O)','(-_-)','(._.)','(---)','(!-!)','(|-|)'];
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 1; i++) {
     let elv={
         name: allElves[random(1,allElves.length-1)],
 
         head: allfaces[random(1,allfaces.length)-1],
         danceSpeed: 200,
         stance: [0, 0, 1, 1],
-         favouriteGems: [allGems[random(1,allGems.length)-1]],
-       // favouriteGems: [allGems[0]],
+        favouriteGems: [allGems[random(1,allGems.length)-1]],
         dislikedGems: [allGems[random(1,allGems.length)-1]]
     };
     elves[i]=elv;

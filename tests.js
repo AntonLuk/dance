@@ -73,9 +73,8 @@ describe("Эльф должен делать движения завищасие
         };
         let gem=allGems[1];
         //console.log(elf.favouriteGems);
-
-
-        displayGemToElf(elf,gem).then((elf) => {
+        //console.log(elf);
+        displayGemToElf(elf,gem).then((elf) => {            
             expect(elf.stance).toEqual([1, 1, 0, 0]);
             done();
         })
@@ -98,14 +97,20 @@ describe("Эльф должен делать движения завищасие
         let elf = {
             danceSpeed: 10,
             stance: [0, 0, 0, 0],
-            favouriteGems:[allGems[5]],
-            dislikedGems:[allGems[6]]
+            //favouriteGems:[allGems[5]],
+            //dislikedGems:[allGems[6]]
         };
         let gem='Андалузит';
-        // console.log(elf.favouriteGems);
-        // console.log(elf.dislikedGems);
-        displayGemToElf(elf,gem).then((elf) => {
-            expect(elf.stance).toEqual([0,0, 1, 1]);
+        let promises=[Promise.resolve(elf)];
+      //  console.log(continueDance(promises,gem)); 
+        let array=  continueDance(promises,gem);
+        console.log(array);   
+        continueDance(promises,gem).then((elf) => {
+            for(let i=0;i<elf.length;i++){
+                console.log(elf[i]);
+                expect(elf[i].stance).toEqual([0,0, 1, 1]);
+            }
+            
             done();
         })
     });
