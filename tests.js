@@ -96,21 +96,41 @@ describe("Эльф должен делать движения завищасие
     it("При показе Андалузита должны принимать изначальную позицию", function(done) {
         let elf = {
             danceSpeed: 10,
-            stance: [0, 0, 0, 0],
-            //favouriteGems:[allGems[5]],
-            //dislikedGems:[allGems[6]]
+            stance: [0, 0, 0, 0],   
+            favouriteGems:[allGems[2]],
+            dislikedGems:[allGems[1]]         
         };
-        let gem='Андалузит';
-        let promises=[Promise.resolve(elf)];
-      //  console.log(continueDance(promises,gem)); 
-        let array=  continueDance(promises,gem);
-        console.log(array);   
-        continueDance(promises,gem).then((elf) => {
-            for(let i=0;i<elf.length;i++){
-                console.log(elf[i]);
-                expect(elf[i].stance).toEqual([0,0, 1, 1]);
-            }
-            
+        let gem='Андалузит';      
+        displayGemToElf(elf,gem).then((elf) => {
+            expect(elf.stance).toEqual([0,0,1,1]);
+            done();
+        })
+    });
+    it("При показе Танзанита должны увеличить скорость в 2 раза", function(done) {
+        let elf = {
+            danceSpeed: 10,
+            stance: [0, 0, 0, 0],   
+            favouriteGems:[allGems[2]],
+            dislikedGems:[allGems[1]]         
+        };
+       let elftspeed=elf.danceSpeed;
+        let gem='Танзанит';      
+        displayGemToElf(elf,gem).then((elf) => {
+            expect(elf.danceSpeed).toEqual(elftspeed*2);
+            done();
+        })
+    });
+    it("При показе Гиацинт должны Принимать кон поз", function(done) {
+        let elf = {
+            danceSpeed: 10,
+            stance: [0, 0, 0, 0],   
+            favouriteGems:[allGems[2]],
+            dislikedGems:[allGems[1]]         
+        };
+       //let elftspeed=elf.danceSpeed;
+        let gem='Гиацинт';      
+        displayGemToElf(elf,gem).then((elf) => {
+            expect(elf.stance).toEqual([1,1,0,0]);
             done();
         })
     });

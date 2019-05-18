@@ -167,45 +167,28 @@ function revers2(elf) {
 // сейчас демонстрируется всем эльфам. Здесь нужно дать команду эльфу выполнить
 // какую-то фигуру или команду и вернуть Promise
 function displayGemToElf(elf, gem) {
-  let arr=[rightHandUp,leftHandDown,leftHandUp,rightHandDown,rightLegUp,rightLegDown,leftLegUp,leftLegDown];
+    //console.log(elf.danceSpeed);
+   
+  let arr=[rightHandUp,leftHandDown,leftHandUp,rightHandDown,rightLegUp,rightLegDown,leftLegUp,leftLegDown,allHandDown,allLegUp,allLegDown,allHandUp];
+  //return arr[random(0,arr.length-1)](elf).then(arr[random(0,arr.length-1)]);
   if(elf.favouriteGems.indexOf( gem ) != -1){
      return allHandUp(elf);
  }
  if(elf.dislikedGems.indexOf( gem ) != -1){
     return allHandDown(elf);      
- }
- 
+ } 
     switch (gem) {
-        // case elf.favouriteGems.toString():
-        //      //return arr[0](elf),arr[2](elf);
-        //     //return allHandUp(elf).then(allHandUp);
-        //    return new Promise((resolve) => {
-        //     setTimeout(() => {
-        //         allHandUp(elf);
-        //         resolve(elf);
-        //     }, elf.danceSpeed);
-        // });
-        //     break;
-        // case elf.dislikedGems.toString():
-        // return new Promise((resolve) => {
-        //     setTimeout(() => {
-        //         allHandDown(elf);
-        //         resolve(elf);
-        //     }, elf.danceSpeed);
-        // });        
-        //     break;
-         case "Цитрин":
-        
-               return allHandUp(elf).then(allHandDown).then(allHandUp).then(allHandDown);
-                     
+        case "Алмаз":        
+        return allHandUp(elf).then(allHandDown);                    
+ break;       
+         case "Цитрин":        
+               return allHandUp(elf).then(allHandDown).then(allHandUp).then(allHandDown);                     
         break;
         case "Аметист":
-         return   leftHandUp(elf).then(rightHandUp).then(leftHandDown).then(rightHandDown);
-                     
+         return   leftHandUp(elf).then(rightHandUp).then(leftHandDown).then(rightHandDown);                     
         break;
         case "Кварц":
-         return  allLegUp(elf).then(allLegDown);
-                       
+         return  allLegUp(elf).then(allLegDown);                       
         break;
         case "Альмандин":
          return  leftSplit(elf);
@@ -215,15 +198,43 @@ function displayGemToElf(elf, gem) {
           
         case "Спессартин":
          return leftLegUp(elf).then(leftHandUp).then(rightHandUp).then(rightLegUp);
-               
+          break;
+          //особые
+        case 'Андалузит':
+            return start(elf);                  
+                break;           
+        case 'Гиацинт':
+            return  finish(elf);             
+                break;               
         case "Пироп":
-        return 
-              revers1(elf).then(revers2);
-                 
+        return revers1(elf).then(revers2);                 
         break;
-        //особые
-       
-        default:        
+        case 'Топаз':
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                elf.danceSpeed=elf.danceSpeed/2;
+                resolve(elf);
+            }, elf.danceSpeed);
+        });
+        break;
+        case 'Циркон':
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(elf);
+                }, elf.danceSpeed);
+            });
+            break;
+        case 'Танзанит':
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    elf.danceSpeed=elf.danceSpeed*2;
+                    resolve(elf);
+                }, elf.danceSpeed);
+            });
+        break;  
+
+        default:      
+        //console.log(random(0,arr.length-1));  
             return arr[random(0,arr.length-1)](elf).then(arr[random(0,arr.length-1)]);
     }
    
@@ -231,56 +242,39 @@ function displayGemToElf(elf, gem) {
 // Эта функция принимает в качестве аргумента танец всех эльфов - массив их Promis'ов,
 // и драгоценность, которая сейчас демонстрируется всем эльфам.
 // Возвращает также танец всех эльфов - массив их Promis'ов
-function continueDance(elvesPromises, gem) {    
-  return elvesPromises.map((elfPromise) => {
+function continueDance(elvesPromises, gem) {
+    //gem="Параиба";
+    if(gem=="Параиба"){
+        console.log("параиба");
+       // alert("параиба");
+        let promise=Promise.all(elvesPromises);
+        console.log(promise);
+        return elvesPromises.map((elfprom)=>{
+           // console.log(elfprom);
+           return elfprom.then(promise.then(elfprom));
+        });
+        //return elvesPromises;
+        // Promise.all(elvesPromises).then((elves)=>{
+        //    // console.log(elves);
+        //    return elves.map((elf)=>{
+        //    console.log(elf);
+        //    }        // elves.forEach(function(elf) {            
+        //     console.log(elf);
+        //     return Promise.resolve(elf);
+        //   });
+      // });
+    //   return elfPromise.then(elf => { 
+       // return displayGemToElf(elf, gem); 
+        //return leftHandUp(elf);        
+                  //});
+    } 
+       
+   return elvesPromises.map((elfPromise) => {
     return elfPromise.then(elf => { 
-        //gem='Параиба';
-        //console.log(elvesPromises);
-        
-        switch (gem.toString()){
-            case 'Андалузит':
-            return start(elf);                  
-                break;
-           
-            case 'Гиацинт':
-            return  finish(elf);             
-                break;
-                
-            case 'Танзанит':
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    elf.danceSpeed=elf.danceSpeed*2;
-                    resolve(elf);
-                }, elf.danceSpeed);
-            });
-            case 'Циркон':
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    //elf.danceSpeed=elf.danceSpeed*2;
-                    resolve(elf);
-                }, elf.danceSpeed);
-            });
-            break;
-            case 'Топаз':
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    elf.danceSpeed=elf.danceSpeed/2;
-                    resolve(elf);
-                }, elf.danceSpeed);
-            });
-            break;
-            case 'Параиба':
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    displayGemToElf(elf,gem);
-                    resolve(elf);
-                }, elf.danceSpeed);
-            });
-            break;
-            default:
-            return displayGemToElf(elf, gem)
-        }    
+      return displayGemToElf(elf, gem); 
+      //return leftHandUp(elf);
       
-    })
-  })
+                })
+            })
+        
 }
